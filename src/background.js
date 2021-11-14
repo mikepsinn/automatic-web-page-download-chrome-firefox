@@ -40,7 +40,7 @@ function initialize(){
 			var opdefaults = {
 				"options-showsubmenu": true,
 				"options-autosave": true,
-				"options-https-also": true,
+				"options-httpsalso": true,
 				"options-nomatch-dosave": true,
 				"options-conflict-dosave": false,
 				"options-downloadsubdir": ""
@@ -189,13 +189,7 @@ async function runAction(message){
 	return result
 }
 async function doDownload(data, location, filename){
-	filename = location.replace(/[^a-z0-9]/gi, "_").toLowerCase()
-	filename = filename.replace("http_", "")
-	filename = filename.replace("https_", "")
-	filename = filename.replace("www_", "")
-	filename = filename.replace("__", "")
-	filename += ".html"
-	/*console.log("doDownload: filename "+filename+" location "+location); */
+	console.log("doDownload: filename " + filename + " location " + location)
 	var blob = null
 	if(data){
 		blob = new Blob([data], {type: "text/x-recoll-data"})

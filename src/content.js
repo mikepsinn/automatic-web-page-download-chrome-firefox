@@ -17,10 +17,10 @@
 var isFirefox
 var menuAction
 var autosave
-var httpsAlso
-var noMatchSave
-var conflictSave
-var downloadSubDir
+var httpsalso
+var nomatchsave
+var conflictsave
+var downloadsubdir
 var urlRules = {
 	inc: [],
 	exc: []
@@ -40,10 +40,10 @@ function loadOptions(object){
 	 console.log("Content init: " + key + " => " + object[key]);
 	 }*/
 	autosave = object["options-autosave"]
-	httpsAlso = object["options-https-also"]
-	noMatchSave = object["options-nomatch-dosave"]
-	conflictSave = object["options-conflict-dosave"]
-	downloadSubDir = object["options-downloadsubdir"]
+	httpsalso = object["options-httpsalso"]
+	nomatchsave = object["options-nomatch-dosave"]
+	conflictsave = object["options-conflict-dosave"]
+	downloadsubdir = object["options-downloadsubdir"]
 	var keys = ["options-url-include", "options-url-exclude"]
 	var sks = ["inc", "exc"]
 	for(var t = 0; t < 2; t++){
@@ -65,7 +65,7 @@ function addListeners(){
 			if(document.readyState == "complete"){
 				if(autosave &&
 				   (document.location.protocol == "http:" ||
-				    (httpsAlso && document.location.protocol == "https:"))){
+				    (httpsalso && document.location.protocol == "https:"))){
 					maybeSave()
 				}
 			}
@@ -86,7 +86,7 @@ function addListeners(){
 					sendResponse({})
 					menuAction = message.menuaction
 					/* Wait for page to complete loading */
-					if(document.readyState === "complete"){
+					if(document.readyState == "complete"){
 						window.setTimeout(
 							function(){
 								performAction(message.srcurl)
@@ -115,8 +115,8 @@ function addListeners(){
 	 * "Open in new tab" for some reason. Initiate save at once. */
 	if(document.readyState == "complete"){
 		if(autosave &&
-		   (document.location.protocol === "http:" ||
-		    (httpsAlso && document.location.protocol == "https:"))){
+		   (document.location.protocol == "http:" ||
+		    (httpsalso && document.location.protocol == "https:"))){
 			maybeSave()
 		}
 	}
@@ -155,7 +155,7 @@ function performAction(srcurl){
 			/* Also set autosave */
 			obj["options-autosave"] = true
 			if(document.location.protocol == "https:"){
-				obj["options-https-also"] = true
+				obj["options-httpsalso"] = true
 			}
 			/* Remove the 'save by default' option, otherwise the
 			 positive rule makes no sense */
@@ -194,13 +194,13 @@ function maybeSave(){
 	var excludedmimes = ["video/*", "audio/*", "image/*", "application/x-shockwave-flash"]
 	for(var x = 0; x < excludedmimes.length; x++){
 		if(wildcardMatch(excludedmimes[x], document.contentType)){
-			console.log("Automatic-Web-Page-Downloader: " + document.contentType + " is excluded")
+			console.log("recoll-we: " + document.contentType + " is excluded")
 			return
 		}
 	}
 	/* We are only called from the automatic save after load situation, and
 	 the protocol (http or https), and checks against
-	 autosave/https-also were performed in the listener.
+	 autosave/httpsalso were performed in the listener.
 	 So we just need to check the url against the selection/exclusion lists.
 	 */
 	var sks = ["exc", "inc"]
@@ -254,10 +254,10 @@ function maybeSave(){
 		flags[1] = true
 	} else {
 		if(!flags[0] && !flags[1]){
-			flags[1] = noMatchSave
+			flags[1] = nomatchsave
 		}
 		if(flags[0] && flags[1]){
-			flags[1] = conflictSave
+			flags[1] = conflictsave
 		}
 	}
 	if(flags[1]){
@@ -265,18 +265,20 @@ function maybeSave(){
 	}
 }
 /* Return the content base file name for a given URL */
-function getContentName(url){
-	let loc = "Automatic-Web-Page-Downloader-c-" + recoll_md5.hex_md5(url) + ".rclwe"
-	if(downloadSubDir){
-		loc = downloadSubDir + "/" + loc
+function getHtmlFileName(url){
+	//let loc = "recoll-we-c-" + recoll_md5.hex_md5(url) + ".rclwe";
+	let loc = url_to_filename(url) + ".html"
+	if(downloadsubdir){
+		loc = downloadsubdir + "/" + loc
 	}
 	return loc
 }
 /* Return the metadata base file name path for a given url */
-function getMetaName(url){
-	let loc = "Automatic-Web-Page-Downloader-m-" + recoll_md5.hex_md5(url) + ".rclwe"
-	if(downloadSubDir){
-		loc = downloadSubDir + "/" + loc
+function getMetaFileName(url){
+	//let loc = "recoll-we-m-" + recoll_md5.hex_md5(url) + ".rclwe";
+	let loc = url_to_filename(url) + ".link"
+	if(downloadsubdir){
+		loc = downloadsubdir + "/" + loc
 	}
 	return loc
 }
@@ -286,6 +288,25 @@ function metadata(url, contentType, charset){
 	       contentType + "\n" +
 	       "k:_unindexed:encoding=" + charset + "\n"
 }
+function url_to_filename(url){
+	let filename = url.split("://")[1]
+	let tld = filename.split(".").pop()
+	tld = tld.split("/")[0]
+	filename = filename.replace("." + tld, "")
+	filename = filename.replace(/[^a-z0-9]/gi, "_")
+	filename = filename.replace("=", "_")
+	filename = filename.replace("http_", "")
+	filename = filename.replace("https_", "")
+	filename = filename.replace("www_", "")
+	filename = filename.replace("__", "")
+	filename = filename.replace("__", "")
+	filename = filename.replace(/_+$/, "")
+	filename = filename.replace(/_+$/, "")
+	if(filename.length > 83){ // Remove numbers if we're going to have to truncate
+		filename = filename.replace(/[0-9]/g, "")
+	}
+	return filename
+}
 function doSave(){
 	chrome.runtime.sendMessage({
 		type: "setSaveBadge", text: "SAVE",
@@ -294,26 +315,23 @@ function doSave(){
 	/* Save metadata */
 	var meta = metadata(document.location.href, document.contentType,
 		document.characterSet)
-	var mfn = getMetaName(document.location.href)
+	var metaFileName = getMetaFileName(document.location.href)
 	chrome.runtime.sendMessage({
 		type: "downloadFile",
 		location: document.location.href,
-		filename: mfn,
+		filename: metaFileName,
 		data: meta,
 	})
 	/* Save data */
 	var data = ""
-	var dfn
 	if(document.contentType.match(/(text|html|xml)/i)){
 		data = document.documentElement.outerHTML
-		dfn = getContentName(document.location.href)
-	} else {
-		dfn = getContentName(document.location.href)
 	}
+	var htmlFileName = getHtmlFileName(document.location.href)
 	chrome.runtime.sendMessage({
 		type: "downloadFile",
 		location: document.location.href,
-		filename: dfn,
+		filename: htmlFileName,
 		data: data,
 	});
 }

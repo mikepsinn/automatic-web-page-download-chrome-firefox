@@ -5,13 +5,15 @@
   "main": "background.js",
   "dependencies": {},
   "devDependencies": {
+    "graceful-fs": "^4.2.8",
     "web-ext-plugin": "^1.4.0",
     "webpack": "^5.64.0",
     "webpack-cli": "^4.9.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "start:firefox": "web-ext run --source-dir ./recoll/ --firefoxProfile default-release --verbose"
   },
   "repository": {
     "type": "git",

@@ -28,7 +28,7 @@ function onLoadPage(event){
 			var checkboxes = [
 				"options-autosave",
 				"options-showsubmenu",
-				"options-https-also",
+				"options-httpsalso",
 				"options-nomatch-dosave",
 				"options-conflict-dosave"
 			]
@@ -99,7 +99,7 @@ function updateRulesTables(){
 			html += "<td>" + urlRules[sk][i][1] + "</td>"
 			html += "<td>" + urlRules[sk][i][2] + "</td></tr>"
 		}
-		if(urlRules[sk].length === 0){
+		if(urlRules[sk].length == 0){
 			html += "<tr><td>" +
 			        "<input id=\"ckb-" + sk + "-0\" type=\"checkbox\"/></td>"
 			html += "<td> </td><td> </td><td> </td></tr>"
@@ -173,7 +173,7 @@ function onClickExcludeSelectAll(event){
 }
 /* Enable or Disable options */
 function onClickAutosave(event){
-	document.getElementById("options-https-also").disabled =
+	document.getElementById("options-httpsalso").disabled =
 		!document.getElementById("options-autosave").checked
 }
 /* Save options */
@@ -181,7 +181,7 @@ function onClickSave(event){
 	var checkboxnames = [
 		"options-showsubmenu",
 		"options-autosave",
-		"options-https-also",
+		"options-httpsalso",
 		"options-nomatch-dosave",
 		"options-conflict-dosave"
 	]
