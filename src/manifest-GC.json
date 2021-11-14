@@ -4,11 +4,11 @@
   "version": "1.0",
   "description": "Downloads all the web pages you visit for indexing with desktop text search applications like Recoll",
   "icons": {
-    "16": "icon_16.png",
-    "32": "icon_32.png",
-    "48": "icon_48.png",
-    "96": "icon_96.png",
-    "128": "icon_128.png"
+    "16": "icons/icon_16p.png",
+    "32": "icons/icon_32p.png",
+    "48": "icons/icon_48p.png",
+    "96": "icons/icon_96p.png",
+    "128": "icons/icon_128p.png"
   },
   "minimum_chrome_version": "35",
   "permissions": [
@@ -22,7 +22,7 @@
   ],
   "browser_action": {
     "default_icon": {
-      "16": "icon_16.png"
+      "16": "icons/icon_16p.png"
     },
     "default_title": "Save to Recoll"
   },

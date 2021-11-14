@@ -316,7 +316,7 @@ function setButtonAndMenuStates(tabId, url){
 			/* Firefox 54- - icon not changed */
 			chrome.browserAction.setIcon({
 				tabId: tabId,
-				path: "icon_16-disabled.png"
+				path: "icons/icon_16-disabledp.png"
 			})
 		}
 		chrome.browserAction.setTitle(
@@ -331,7 +331,7 @@ function setButtonAndMenuStates(tabId, url){
 	} else if(url.substr(0, 5) == "file:"){
 		chrome.browserAction.enable(tabId)
 		if(isFirefox && ffVersion <= 54){
-			chrome.browserAction.setIcon({tabId: tabId, path: "icon_16.png"})
+			chrome.browserAction.setIcon({tabId: tabId, path: "icons/icon_16p.png"})
 		}
 		chrome.browserAction.setTitle({tabId: tabId, title: "Automatic Web Page Downloader"})
 		chrome.contextMenus.update("indexnow", {enabled: true})
@@ -341,7 +341,7 @@ function setButtonAndMenuStates(tabId, url){
 	} else {
 		chrome.browserAction.enable(tabId)
 		if(isFirefox && ffVersion <= 54){
-			chrome.browserAction.setIcon({tabId: tabId, path: "icon_16.png"})
+			chrome.browserAction.setIcon({tabId: tabId, path: "icons/icon_16p.png"})
 		}
 		chrome.browserAction.setTitle({tabId: tabId, title: "Automatic Web Page Downloader"})
 		chrome.contextMenus.update("indexnow", {enabled: true})
@@ -362,7 +362,7 @@ function alertNotify(message){
 	chrome.notifications.create(
 		"alert",
 		{
-			type: "basic", iconUrl: "icon_32.png", title: "Automatic-Web-Page-Downloader",
+			type: "basic", iconUrl: "icons/icon_32p.png", title: "Automatic-Web-Page-Downloader",
 			message: "" + message
 		});
 }
