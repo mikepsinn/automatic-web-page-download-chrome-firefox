@@ -1,0 +1,36 @@
+{
+  "name": "automatic-web-page-downloader",
+  "version": "1.0.0",
+  "description": "Downloads all the web pages you visit for indexing with desktop text search applications like Recoll",
+  "main": "background.js",
+  "dependencies": {},
+  "devDependencies": {
+    "web-ext-plugin": "^1.4.0",
+    "webpack": "^5.64.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikepsinn/automatic-web-page-download-chrome-firefox.git"
+  },
+  "keywords": [
+    "archive",
+    "websites",
+    "recoll",
+    "web",
+    "indexer",
+    "download",
+    "web",
+    "pages"
+  ],
+  "author": "mikepsinn",
+  "license": "GPL-2.0-only",
+  "bugs": {
+    "url": "https://github.com/mikepsinn/automatic-web-page-download-chrome-firefox/issues"
+  },
+  "homepage": "https://github.com/mikepsinn/automatic-web-page-download-chrome-firefox#readme"
+}

@@ -1,0 +1,41 @@
+{
+  "manifest_version": 2,
+  "name": "Automatic Web Page Downloader",
+  "description": "Downloads all the web pages you visit for indexing with desktop text search applications like Recoll",
+  "version": "0.0.1",
+  "icons": {
+    "64": "icons/icon.png"
+  },
+  "background": {
+    "scripts": [
+      "background_script.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.mozilla.org/*"
+      ],
+      "js": [
+        "content_script.js"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_icon": {
+      "64": "icons/icon.png"
+    },
+    "default_popup": "browserAction/index.html",
+    "default_title": "Automatic Web Page Downloader"
+  },
+  "page_action": {
+    "default_icon": {
+      "64": "icons/icon.png"
+    },
+    "default_popup": "pageAction/index.html",
+    "default_title": "Automatic Web Page Downloader"
+  },
+  "options_ui": {
+    "page": "options/index.html"
+  }
+}

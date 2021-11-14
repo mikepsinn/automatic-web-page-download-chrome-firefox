@@ -1,0 +1,57 @@
+{
+  "manifest_version": 2,
+  "name": "Automatic Web Page Downloader",
+  "version": "1.0",
+  "description": "Downloads all the web pages you visit for indexing with desktop text search applications like Recoll",
+  "icons": {
+    "16": "icon_16.png",
+    "32": "icon_32.png",
+    "48": "icon_48.png",
+    "96": "icon_96.png",
+    "128": "icon_128.png"
+  },
+  "minimum_chrome_version": "35",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "webNavigation",
+    "contextMenus",
+    "notifications",
+    "storage",
+    "downloads"
+  ],
+  "browser_action": {
+    "default_icon": {
+      "16": "icon_16.png"
+    },
+    "default_title": "Save to Recoll"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "content.js",
+        "md5.js"
+      ]
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "description": "Index Page",
+      "suggested_key": {
+        "default": "Alt+A"
+      }
+    }
+  }
+}
